@@ -46,68 +46,68 @@ public class PurchaseController {
 
   @PostMapping("/createPurchase")
   public @ResponseBody ResponseEntity<String> createPurchase(@RequestBody PurchaseRequestDTO.Purchase newPurchaseDTO) {
-    if (newPurchaseDTO.amountPerProductId == null || newPurchaseDTO.customerId == null || newPurchaseDTO.employeeId == null) {
-      return ResponseEntity.status(400).body("Not enogh info provided!");
-    }
+    // if (newPurchaseDTO.amountPerProductId == null || newPurchaseDTO.customerId == null || newPurchaseDTO.employeeId == null) {
+    //   return ResponseEntity.status(400).body("Not enogh info provided!");
+    // }
 
-    Customer customer = customerRepository.getById(newPurchaseDTO.customerId);
-    if (customer == null) {
-      return ResponseEntity.status(400).body("Can not find customer!");
-    }
-    Employee employee = employeeRepository.getById(newPurchaseDTO.customerId);
-    if (employee == null) {
-      return ResponseEntity.status(400).body("Can not find employee!");
-    }
+    // Customer customer = customerRepository.getById(newPurchaseDTO.customerId);
+    // if (customer == null) {
+    //   return ResponseEntity.status(400).body("Can not find customer!");
+    // }
+    // Employee employee = employeeRepository.getById(newPurchaseDTO.customerId);
+    // if (employee == null) {
+    //   return ResponseEntity.status(400).body("Can not find employee!");
+    // }
 
-    List<Product> products = productRepository.findByIdIn(newPurchaseDTO.amountPerProductId.keySet());
-    if (products.isEmpty()) {
-      return ResponseEntity.status(400).body("Can not find products!");
-    }
+    // List<Product> products = productRepository.findByIdIn(newPurchaseDTO.amountPerProductId.keySet());
+    // if (products.isEmpty()) {
+    //   return ResponseEntity.status(400).body("Can not find products!");
+    // }
 
-    Map<String, Product> productPerId = new HashMap<>();
-    Map<String, Double> productSubtotalPerId = new HashMap<>();
-    for (Product product : products) {
-      productPerId.put(product.getId(), product);
-      if (!productSubtotalPerId.containsKey(product.getId())) {
-        productSubtotalPerId.put(product.getId(), product.getPrice());
-      } else {
-        productSubtotalPerId.put(product.getId(), productSubtotalPerId.get(product.getId()) + product.getPrice());
-      }
-    }
+    // Map<String, Product> productPerId = new HashMap<>();
+    // Map<String, Double> productSubtotalPerId = new HashMap<>();
+    // for (Product product : products) {
+    //   productPerId.put(product.getId(), product);
+    //   if (!productSubtotalPerId.containsKey(product.getId())) {
+    //     productSubtotalPerId.put(product.getId(), product.getPrice());
+    //   } else {
+    //     productSubtotalPerId.put(product.getId(), productSubtotalPerId.get(product.getId()) + product.getPrice());
+    //   }
+    // }
 
-    Double totalAmount = 0.0;
-    for (Product product : products) {
-      totalAmount += product.getPrice();
-    }
+    // Double totalAmount = 0.0;
+    // for (Product product : products) {
+    //   totalAmount += product.getPrice();
+    // }
 
-    Purchase purchaseToCreate = new Purchase();
-    purchaseToCreate.createPurchase(
-      customer,
-      employee,
-      totalAmount,
-      new Date(),
-      newPurchaseDTO.deliveryDate
-    );
+    // Purchase purchaseToCreate = new Purchase();
+    // purchaseToCreate.createPurchase(
+    //   customer,
+    //   employee,
+    //   totalAmount,
+    //   new Date(),
+    //   newPurchaseDTO.deliveryDate
+    // );
 
-    String purchaseId = purchaseRepository.save(purchaseToCreate).getId();
-    if (Utility.isStringEmpty(purchaseId)) {
-      return ResponseEntity.status(400).body("Failed to create purchase!");
-    }
+    // String purchaseId = purchaseRepository.save(purchaseToCreate).getId();
+    // if (Utility.isStringEmpty(purchaseId)) {
+    //   return ResponseEntity.status(400).body("Failed to create purchase!");
+    // }
 
-    List<ProductsInPurchase> productsInPurchase = new ArrayList<>();
-    for (String productId : newPurchaseDTO.amountPerProductId.keySet()) {
-      ProductsInPurchase productInPurchase = new ProductsInPurchase();
-      productInPurchase.createProductInPurchase(
-        newPurchaseDTO.amountPerProductId.get(productId),
-        productSubtotalPerId.get(productId),
-        productPerId.get(productId),
-        purchaseToCreate
-      );
+    // List<ProductsInPurchase> productsInPurchase = new ArrayList<>();
+    // for (String productId : newPurchaseDTO.amountPerProductId.keySet()) {
+    //   ProductsInPurchase productInPurchase = new ProductsInPurchase();
+    //   productInPurchase.createProductInPurchase(
+    //     newPurchaseDTO.amountPerProductId.get(productId),
+    //     productSubtotalPerId.get(productId),
+    //     productPerId.get(productId),
+    //     purchaseToCreate
+    //   );
 
-      productsInPurchase.add(productInPurchase);
-    }
+    //   productsInPurchase.add(productInPurchase);
+    // }
 
-    productsInPurchaseRepository.saveAll(productsInPurchase);
+    // productsInPurchaseRepository.saveAll(productsInPurchase);
 
     return ResponseEntity.status(200).body("Success");
   }

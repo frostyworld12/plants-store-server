@@ -1,6 +1,9 @@
 package com.example.plantsstore.model;
 
+import java.time.LocalDateTime;
+
 import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
@@ -19,26 +22,30 @@ public class Employee {
   @JoinColumn(name="userId")
   private User user;
 
+  @Column(columnDefinition="MEDIUMBLOB")
+  private String image;
+
   private String firstName;
   private String lastName;
   private String position;
 
-  public void createEmployee(
-    String firstName,
-    String lastName,
-    String position,
-    User user
-  ) {
+  @Column(updatable = false)
+  private LocalDateTime createdAt;
+
+  public Employee(User user, String image, String firstName, String lastName, String position) {
+    this.user = user;
+    this.image = image;
     this.firstName = firstName;
     this.lastName = lastName;
     this.position = position;
-    this.user = user;
+    this.createdAt = LocalDateTime.now();
   }
+
+  public Employee() {}
 
   public String getId() {
     return id;
   }
-
   public void setId(String id) {
     this.id = id;
   }
@@ -46,15 +53,20 @@ public class Employee {
   public User getUser() {
     return user;
   }
-
   public void setUser(User user) {
     this.user = user;
+  }
+
+  public String getImage() {
+    return image;
+  }
+  public void setImage(String image) {
+    this.image = image;
   }
 
   public String getFirstName() {
     return firstName;
   }
-
   public void setFirstName(String firstName) {
     this.firstName = firstName;
   }
@@ -62,7 +74,6 @@ public class Employee {
   public String getLastName() {
     return lastName;
   }
-
   public void setLastName(String lastName) {
     this.lastName = lastName;
   }
@@ -70,7 +81,6 @@ public class Employee {
   public String getPosition() {
     return position;
   }
-
   public void setPosition(String position) {
     this.position = position;
   }

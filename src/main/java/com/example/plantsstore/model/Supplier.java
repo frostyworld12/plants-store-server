@@ -1,5 +1,8 @@
 package com.example.plantsstore.model;
 
+import java.time.LocalDateTime;
+
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -16,6 +19,9 @@ public class Supplier {
   private String email;
   private String phone;
 
+  @Column(updatable = false)
+  private LocalDateTime createdAt;
+
   public Supplier(
     String name,
     String contactPerson,
@@ -26,7 +32,10 @@ public class Supplier {
     this.contactPerson = contactPerson;
     this.email = email;
     this.phone = phone;
+    this.createdAt = LocalDateTime.now();
   }
+
+  public Supplier() {}
 
   public String getId() {
     return id;

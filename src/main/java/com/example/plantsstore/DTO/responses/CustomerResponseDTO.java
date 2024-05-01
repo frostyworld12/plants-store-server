@@ -1,6 +1,20 @@
-package com.example.plantsstore.DTO.requests;
+package com.example.plantsstore.DTO.responses;
 
-public class CustomerRequestDTO {
+import java.util.List;
+
+public class CustomerResponseDTO {
+  public static class Customers {
+    public Integer count;
+    public List<Customer> suppliers;
+
+    public Customers(Integer count, List<Customer> suppliers) {
+      this.count = count;
+      this.suppliers = suppliers;
+    }
+
+    public Customers() {}
+  }
+
   public static class Customer {
     public String id;
     public String firstName;

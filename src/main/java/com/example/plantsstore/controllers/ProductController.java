@@ -46,64 +46,64 @@ public class ProductController {
 
   @PostMapping("/createProduct")
   public @ResponseBody ResponseEntity<String> createProduct(@RequestBody ProductRequestDTO.Product newProductDTO) {
-    List<Product> existingProducts = productRepository.findByNameIgnoreCase(newProductDTO.name);
+    // List<Product> existingProducts = productRepository.findByNameIgnoreCase(newProductDTO.name);
 
-    Product product = null;
-    if (existingProducts.isEmpty()) {
-      product = new Product(
-        newProductDTO.name,
-        newProductDTO.description,
-        newProductDTO.price,
-        newProductDTO.image
-      );
-      productRepository.save(product);
-    } else if (!Utility.isStringEmpty(newProductDTO.id)) {
-      product = productRepository.getById(newProductDTO.id);
-    }
+    // Product product = null;
+    // if (existingProducts.isEmpty()) {
+    //   product = new Product(
+    //     newProductDTO.name,
+    //     newProductDTO.description,
+    //     newProductDTO.price,
+    //     newProductDTO.image
+    //   );
+    //   productRepository.save(product);
+    // } else if (!Utility.isStringEmpty(newProductDTO.id)) {
+    //   product = productRepository.getById(newProductDTO.id);
+    // }
 
-    if (product == null) {
-      return ResponseEntity.status(400).body("Can not find product!");
-    }
+    // if (product == null) {
+    //   return ResponseEntity.status(400).body("Can not find product!");
+    // }
 
-    Supplier supplier = supplierRepository.findByNameAndContactPersonAndEmailAndPhoneIgnoreCase(
-      newProductDTO.supplier.name,
-      newProductDTO.supplier.contactPerson,
-      newProductDTO.supplier.email,
-      newProductDTO.supplier.phone
-    );
+    // Supplier supplier = supplierRepository.findByNameAndContactPersonAndEmailAndPhoneIgnoreCase(
+    //   newProductDTO.supplier.name,
+    //   newProductDTO.supplier.contactPerson,
+    //   newProductDTO.supplier.email,
+    //   newProductDTO.supplier.phone
+    // );
 
-    if (supplier == null) {
-      supplier = new Supplier(
-        newProductDTO.supplier.name,
-        newProductDTO.supplier.contactPerson,
-        newProductDTO.supplier.email,
-        newProductDTO.supplier.phone
-      );
-    }
+    // if (supplier == null) {
+    //   // supplier = new Supplier(
+    //   //   newProductDTO.supplier.name,
+    //   //   newProductDTO.supplier.contactPerson,
+    //   //   newProductDTO.supplier.email,
+    //   //   newProductDTO.supplier.phone
+    //   // );
+    // }
 
-    Supplie supplie = new Supplie(
-      supplier,
-      product,
-      new Date(),
-      newProductDTO.price * newProductDTO.quantity
-    );
-    supplieRepository.save(supplie);
+    // Supplie supplie = new Supplie(
+    //   supplier,
+    //   product,
+    //   new Date(),
+    //   newProductDTO.price * newProductDTO.quantity
+    // );
+    // supplieRepository.save(supplie);
 
-    Inventory inventory = inventoryRepository.findByProductId(product.getId());
-    if (inventory == null) {
-      inventory = new Inventory(
-        product,
-        newProductDTO.quantity,
-        new Date()
-      );
+    // Inventory inventory = inventoryRepository.findByProductId(product.getId());
+    // if (inventory == null) {
+    //   inventory = new Inventory(
+    //     product,
+    //     newProductDTO.quantity,
+    //     new Date()
+    //   );
 
-      inventoryRepository.save(inventory);
-    } else {
-      inventory.setQuantityAvailable(inventory.getQuantityAvailable() + newProductDTO.quantity);
-      inventory.setLastRestockDate(new Date());
+    //   inventoryRepository.save(inventory);
+    // } else {
+    //   inventory.setQuantityAvailable(inventory.getQuantityAvailable() + newProductDTO.quantity);
+    //   inventory.setLastRestockDate(new Date());
 
-      inventoryRepository.save(inventory);
-    }
+    //   inventoryRepository.save(inventory);
+    // }
 
     return ResponseEntity.status(200).body("Product successfully created!");
   }
