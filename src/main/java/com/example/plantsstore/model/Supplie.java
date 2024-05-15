@@ -1,7 +1,9 @@
 package com.example.plantsstore.model;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -12,7 +14,7 @@ import jakarta.persistence.ManyToOne;
 @Entity
 public class Supplie {
   @Id
-  @GeneratedValue(strategy=GenerationType.UUID)
+  @GeneratedValue(strategy = GenerationType.UUID)
   private String id;
 
   @ManyToOne
@@ -26,23 +28,27 @@ public class Supplie {
   private Date date;
   private Double totalPrice;
 
+  @Column(updatable = false)
+  private LocalDateTime createdAt;
+
   public Supplie(
-    Supplier supplier,
-    Product product,
-    Date date,
-    Double totalPrice
-  ) {
-    this.supplier   = supplier;
-    this.product    = product;
-    this.date       = date;
+      Supplier supplier,
+      Product product,
+      Date date,
+      Double totalPrice) {
+    this.supplier = supplier;
+    this.product = product;
+    this.date = date;
     this.totalPrice = totalPrice;
   }
 
-  public Supplie() {}
+  public Supplie() {
+  }
 
   public String getId() {
     return id;
   }
+
   public void setId(String id) {
     this.id = id;
   }
@@ -50,6 +56,7 @@ public class Supplie {
   public Supplier getSupplier() {
     return supplier;
   }
+
   public void setSupplier(Supplier supplier) {
     this.supplier = supplier;
   }
@@ -57,6 +64,7 @@ public class Supplie {
   public Product getProduct() {
     return product;
   }
+
   public void setProduct(Product product) {
     this.product = product;
   }
@@ -64,6 +72,7 @@ public class Supplie {
   public Date getDate() {
     return date;
   }
+
   public void setDate(Date date) {
     this.date = date;
   }
@@ -71,6 +80,7 @@ public class Supplie {
   public Double getTotalPrice() {
     return totalPrice;
   }
+
   public void setTotalPrice(Double totalPrice) {
     this.totalPrice = totalPrice;
   }

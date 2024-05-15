@@ -18,8 +18,8 @@ public class Employee {
   @GeneratedValue(strategy=GenerationType.UUID)
   private String id;
 
-  @OneToOne(fetch = FetchType.LAZY)
-  @JoinColumn(name="userId")
+  @OneToOne(cascade = CascadeType.REMOVE, orphanRemoval = true, targetEntity = User.class)
+  @JoinColumn(name="userId", referencedColumnName = "id", nullable = false)
   private User user;
 
   @Column(columnDefinition="MEDIUMBLOB")

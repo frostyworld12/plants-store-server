@@ -1,5 +1,7 @@
 package com.example.plantsstore.DTO.requests;
 
+import java.util.List;
+
 public class ProductRequestDTO {
   public static class Product {
     public String id;
@@ -7,14 +9,18 @@ public class ProductRequestDTO {
     public String description;
     public Double price;
     public String image;
-    public Integer quantity;
-    public Supplier supplier;
-  }
+    public List<String> suppliers;
 
-  public static class Supplier {
-    public String name;
-    public String contactPerson;
-    public String email;
-    public String phone;
+    public Product(String id, String name, String description, Double price, String image, List<String> suppliers) {
+      this.id = id;
+      this.name = name;
+      this.description = description;
+      this.price = price;
+      this.image = image;
+      this.suppliers = suppliers;
+    }
+
+    public Product() {
+    }
   }
 }

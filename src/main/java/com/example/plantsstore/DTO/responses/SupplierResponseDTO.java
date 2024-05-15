@@ -33,4 +33,24 @@ public class SupplierResponseDTO {
       this.contactPerson = contactPerson;
     }
   }
+
+  public static class SupplierUser {
+    public String id;
+    public String email;
+    public String name;
+    public String phone;
+    public String contactPerson;
+    public String username;
+
+    public SupplierUser() {}
+
+    public SupplierUser(String id, String email, String name, String phone, String contactPerson, String username) {
+      this.id = id;
+      this.email = email;
+      this.name = name;
+      this.phone = phone;
+      this.contactPerson = contactPerson;
+      this.username = username;
+    }
+  }
 }

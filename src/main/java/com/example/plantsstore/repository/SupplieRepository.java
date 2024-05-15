@@ -9,4 +9,5 @@ import com.example.plantsstore.model.*;
 
 public interface SupplieRepository extends CrudRepository<Supplie, String> {
   List<Supplie> findByProductIdIn(Set<String> productIds);
+
 }

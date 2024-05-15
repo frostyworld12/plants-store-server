@@ -1,5 +1,8 @@
 package com.example.plantsstore.model;
 
+import java.time.LocalDateTime;
+
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -10,7 +13,7 @@ import jakarta.persistence.ManyToOne;
 @Entity
 public class ProductsInPurchase {
   @Id
-  @GeneratedValue(strategy=GenerationType.UUID)
+  @GeneratedValue(strategy = GenerationType.UUID)
   private String id;
 
   private Integer quantity;
@@ -23,6 +26,9 @@ public class ProductsInPurchase {
   @ManyToOne
   @JoinColumn(name = "productId")
   private Product product;
+
+  @Column(updatable = false)
+  private LocalDateTime createdAt;
 
   public String getId() {
     return id;
@@ -65,11 +71,10 @@ public class ProductsInPurchase {
   }
 
   public void createProductInPurchase(
-    Integer quantity,
-    Double subtotal,
-    Product product,
-    Purchase purchase
-  ) {
+      Integer quantity,
+      Double subtotal,
+      Product product,
+      Purchase purchase) {
     this.quantity = quantity;
     this.subtotal = subtotal;
     this.product = product;

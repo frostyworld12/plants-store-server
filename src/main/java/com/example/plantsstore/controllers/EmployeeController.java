@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.example.plantsstore.DTO.requests.EmployeeRequestDTO;
+import com.example.plantsstore.DTO.EmployeeDTO;
 import com.example.plantsstore.model.Employee;
 import com.example.plantsstore.model.User;
 import com.example.plantsstore.DTO.responses.EmployeeResponseDTO;
@@ -34,54 +34,8 @@ public class EmployeeController {
   @Autowired
   private UserRepository userRepository;
 
-  @PostMapping("/saveEmployee")
-  public @ResponseBody ResponseEntity<?> saveEmployee(@RequestBody EmployeeRequestDTO.Employee newEmployee) {
-    User existingUser = userRepository.findByUsernameAndIdNot(newEmployee.username, newEmployee.userId);
-
-    try {
-      if (existingUser != null) {
-        throw new Exception("Employee with such username already exists!");
-      }
-
-      User user = !Utility.isStringEmpty(newEmployee.userId) ? userRepository.getById(newEmployee.userId) : null;
-      Employee employee = !Utility.isStringEmpty(newEmployee.userId) ? employeeRepository.findByUserId(newEmployee.userId) : null;
-
-      if (user != null) {
-        user.setUsername(newEmployee.username);
-        if (Utility.isStringEmpty(newEmployee.password)) {
-          user.setPassword(newEmployee.password);
-        }
-
-        employee.setImage(newEmployee.image);
-        employee.setFirstName(newEmployee.firstName);
-        employee.setLastName(newEmployee.lastName);
-        employee.setPosition(newEmployee.position);
-      } else {
-        user = new User(
-          newEmployee.username,
-          newEmployee.password
-        );
-
-        employee = new Employee(
-          user,
-          newEmployee.image,
-          newEmployee.firstName,
-          newEmployee.lastName,
-          newEmployee.position
-        );
-      }
-
-      userRepository.save(user);
-      employeeRepository.save(employee);
-    } catch (Exception ex) {
-      return ResponseEntity.status(400).body(ex.getMessage());
-    }
-
-    return ResponseEntity.status(200).body("Success");
-  }
-
   @GetMapping("/getEmployees")
-  public @ResponseBody ResponseEntity<?> getEmployee(
+  public @ResponseBody ResponseEntity<?> getEmployees(
     @RequestParam("limit") Integer limit,
     @RequestParam("offset") Integer offset,
     @RequestParam(value="query", required=false) String query
@@ -116,6 +70,72 @@ public class EmployeeController {
     }
     return ResponseEntity.status(200).body(result);
   }
+
+  @GetMapping("/getEmployee")
+  public @ResponseBody ResponseEntity<?> getEmployee(@RequestParam("employeeId") String employeeId) {
+    try {
+      Employee employee = employeeRepository.getById(employeeId);
+      if (employee == null) {
+        throw new Exception("Can not find employee!");
+      }
+
+      EmployeeDTO.Employee result = new EmployeeDTO.Employee(
+        employee.getId(),
+        employee.getImage(),
+        employee.getFirstName(),
+        employee.getLastName(),
+        employee.getPosition()
+      );
+
+      return ResponseEntity.status(200).body(result);
+    } catch (Exception ex) {
+      return ResponseEntity.status(400).body(ex.getMessage());
+    }
+  }
+
+  @PostMapping("/saveEmployee")
+  public ResponseEntity<?> saveEmployee(@RequestBody EmployeeDTO.Employee newEmployee) {
+    try {
+      EmployeeDTO.User employeeUser = newEmployee.user;
+      User user = null;
+
+      if (employeeUser != null) {
+        User existingUser = !Utility.isStringEmpty(employeeUser.id)
+          ? userRepository.findByUsername(employeeUser.username)
+          : userRepository.findByUsernameAndIdNot(employeeUser.username, employeeUser.id);
+
+        if (existingUser != null) {
+          throw new Error("User with such username already exsts!");
+        }
+
+        user = !Utility.isStringEmpty(employeeUser.id)
+          ? userRepository.getById(employeeUser.id)
+          : new User();
+        if (!Utility.isStringEmpty(employeeUser.username)) user.setUsername(employeeUser.username);
+        if (!Utility.isStringEmpty(employeeUser.password)) user.setPassword(employeeUser.password);
+      }
+
+      Employee employee = !Utility.isStringEmpty(newEmployee.id)
+        ? employeeRepository.getById(newEmployee.id)
+        : new Employee();
+
+      if (!Utility.isStringEmpty(newEmployee.firstName)) employee.setFirstName(newEmployee.firstName);
+      if (!Utility.isStringEmpty(newEmployee.lastName)) employee.setLastName(newEmployee.lastName);
+      if (!Utility.isStringEmpty(newEmployee.image)) employee.setImage(newEmployee.image);
+      if (!Utility.isStringEmpty(newEmployee.position)) employee.setPosition(newEmployee.position);
+      if (user != null) {
+        employee.setUser(user);
+        userRepository.save(user);
+      }
+      employeeRepository.save(employee);
+
+      return ResponseEntity.status(200).body("Success");
+    } catch (Exception ex) {
+      System.out.println(ex.toString());
+      return ResponseEntity.status(400).body(ex.getMessage());
+    }
+  }
+
 
   @DeleteMapping("/deleteEmployee")
   public @ResponseBody ResponseEntity<?> deleteEmployee(@RequestParam("userId") String userId) {

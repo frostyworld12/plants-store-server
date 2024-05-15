@@ -1,8 +1,10 @@
 package com.example.plantsstore.model;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -30,11 +32,16 @@ public class Purchase {
   private Date deliveryDate;
   private Double totalAmount;
 
-  public Purchase() {}
+  @Column(updatable = false)
+  private LocalDateTime createdAt;
+
+  public Purchase() {
+  }
 
   public String getId() {
     return id;
   }
+
   public void setId(String id) {
     this.id = id;
   }
@@ -42,6 +49,7 @@ public class Purchase {
   public Customer getCustomer() {
     return customer;
   }
+
   public void setCustomer(Customer customer) {
     this.customer = customer;
   }
@@ -49,6 +57,7 @@ public class Purchase {
   public Employee getEmployee() {
     return employee;
   }
+
   public void setEmployee(Employee employee) {
     this.employee = employee;
   }
@@ -56,6 +65,7 @@ public class Purchase {
   public Date getOrderDate() {
     return orderDate;
   }
+
   public void setOrderDate(Date orderDate) {
     this.orderDate = orderDate;
   }
@@ -63,6 +73,7 @@ public class Purchase {
   public Date getDeliveryDate() {
     return deliveryDate;
   }
+
   public void setDeliveryDate(Date deliveryDate) {
     this.deliveryDate = deliveryDate;
   }
@@ -70,23 +81,23 @@ public class Purchase {
   public Double getTotalAmount() {
     return totalAmount;
   }
+
   public void setTotalAmount(Double totalAmount) {
     this.totalAmount = totalAmount;
   }
 
   public void createPurchase(
-    Customer customer,
-    Employee employee,
-    Double totalAmount,
-    Date orderDate,
-    Date deliveryDate
-  ) {
-    this.customer     = customer;
-    this.employee     = employee;
+      Customer customer,
+      Employee employee,
+      Double totalAmount,
+      Date orderDate,
+      Date deliveryDate) {
+    this.customer = customer;
+    this.employee = employee;
 
-    this.totalAmount  = totalAmount;
+    this.totalAmount = totalAmount;
 
-    this.orderDate    = orderDate;
+    this.orderDate = orderDate;
     this.deliveryDate = deliveryDate;
   }
 }

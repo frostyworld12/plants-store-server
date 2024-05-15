@@ -7,5 +7,7 @@ public interface UserRepository extends CrudRepository<User, String> {
   User findByUsernameAndIdNot(String username, String id);
   User findByUsername(String username);
 
+  User findByUsernameAndPassword(String username, String password);
+
   User getById(String id);
 }

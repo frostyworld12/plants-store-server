@@ -1,52 +1,39 @@
 package com.example.plantsstore.DTO.responses;
 
+import java.util.List;
+
 public class ProductResponseDTO {
+  public static class Products {
+    public Integer count;
+    public List<Product> products;
+
+    public Products(Integer count, List<Product> products) {
+      this.count = count;
+      this.products = products;
+    }
+
+    public Products() {
+    }
+  }
+
   public static class Product {
     public String id;
     public String name;
     public String description;
     public Double price;
     public String image;
-    public Integer quantity;
-    public Supplier supplier;
+    public List<SupplierResponseDTO.Supplier> suppliers;
 
-    public Product(
-      String id,
-      String name,
-      String description,
-      Double price,
-      String image,
-      Integer quantity,
-      Supplier supplier
-    ) {
-      this.id          = id;
-      this.name        = name;
+    public Product(String id, String name, String description, Double price, String image, List<SupplierResponseDTO.Supplier> suppliers) {
+      this.id = id;
+      this.name = name;
       this.description = description;
-      this.price       = price;
-      this.image       = image;
-      this.quantity    = quantity;
-      this.supplier    = supplier;
+      this.price = price;
+      this.image = image;
+      this.suppliers = suppliers;
     }
 
-  }
-
-  public static class Supplier {
-    public String id;
-    public String name;
-    public String contactPerson;
-    public String email;
-    public String phone;
-
-    public Supplier(
-      String id,
-      String name,
-      String contactPerson,
-      String email
-    ) {
-      this.id            = id;
-      this.name          = name;
-      this.contactPerson = contactPerson;
-      this.email         = email;
+    public Product() {
     }
   }
 }
