@@ -1,17 +1,9 @@
 package com.example.plantsstore.model;
 
 import java.time.LocalDateTime;
-import java.util.List;
+import java.util.*;
 
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.JoinTable;
-import jakarta.persistence.ManyToMany;
+import jakarta.persistence.*;
 
 @Entity
 public class Product {
@@ -30,8 +22,7 @@ public class Product {
   @Column(updatable = false)
   private LocalDateTime createdAt;
 
-  @ManyToMany(cascade = CascadeType.MERGE)
-  @JoinTable(name = "product_suppliers", joinColumns = @JoinColumn(name = "product_id"), inverseJoinColumns = @JoinColumn(name = "supplier_id"))
+  @ManyToMany
   private List<Supplier> suppliers;
 
   public Product(String name, String description, Double price, String image, List<Supplier> suppliers) {

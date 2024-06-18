@@ -2,14 +2,7 @@ package com.example.plantsstore.model;
 
 import java.time.LocalDateTime;
 
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.OneToOne;
+import jakarta.persistence.*;
 
 @Entity
 public class Supplier {
@@ -30,17 +23,28 @@ public class Supplier {
   private LocalDateTime createdAt;
 
   public Supplier(
-    String name,
-    String contactPerson,
-    String email,
-    String phone,
-    User user
-  ) {
+      String name,
+      String contactPerson,
+      String email,
+      String phone,
+      User user) {
     this.name = name;
     this.contactPerson = contactPerson;
     this.email = email;
     this.phone = phone;
     this.user = user;
+    this.createdAt = LocalDateTime.now();
+  }
+
+  public Supplier(
+      String name,
+      String contactPerson,
+      String email,
+      String phone) {
+    this.name = name;
+    this.contactPerson = contactPerson;
+    this.email = email;
+    this.phone = phone;
     this.createdAt = LocalDateTime.now();
   }
 

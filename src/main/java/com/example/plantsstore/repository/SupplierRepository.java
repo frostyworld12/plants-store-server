@@ -16,11 +16,14 @@ public interface SupplierRepository extends CrudRepository<Supplier, String> {
   List<Supplier> findAllByIdIn(List<String> id);
 
   Page<Supplier> findAllByOrderByCreatedAtDesc(Pageable pageable);
+
   Page<Supplier> findByNameContainingOrderByCreatedAtDesc(String name, Pageable pageable);
 
   List<Supplier> findAllByOrderByCreatedAtDesc();
+
   List<Supplier> findByNameContainingOrderByCreatedAtDesc(String name);
 
   Supplier findByNameAndContactPersonAndEmailAndIdNot(String name, String contactPerson, String email, String id);
+
   Supplier findByNameAndContactPersonAndEmail(String name, String contactPerson, String email);
 }
